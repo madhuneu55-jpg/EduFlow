@@ -1,0 +1,95 @@
+ <!-- Rooms -->
+        {% for room in rooms %}
+
+            <div class="room-card">
+
+
+                <!-- Room Top -->
+                <div class="room-card-top">
+
+                    <div class="host-info">
+
+                        <div class="host-avatar">
+                            {{ room.host.username|first|upper }}
+                        </div>
+
+                        <span>
+                            Hosted by
+                            <a href="{% url 'user_profile' room.host.id %}">
+                                @{{ room.host.username }}
+                            </a>
+                        </span>
+
+                    </div>
+
+
+                    {% if request.user == room.host %}
+
+                        <div class="room-actions">
+
+                            <a
+                                href="{% url 'update_room' room.id %}"
+                                class="room-action edit-action"
+                            >
+                                Edit
+                            </a>
+
+                            <a
+                                href="{% url 'delete_room' room.id %}"
+                                class="room-action delete-action"
+                            >
+                                Delete
+                            </a>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- Room Name -->
+                <div class="room-title">
+
+                    <a href="{% url 'room' room.id %}">
+                        {{ room.name }}
+                    </a>
+
+                </div>
+
+
+                <!-- Room Footer -->
+                <div class="room-footer">
+
+                    <span class="topic-badge">
+                        {{ room.topic.name }}
+                    </span>
+
+                    <span class="room-number">
+                        Room #{{ room.id }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        {% empty %}
+
+            <div class="empty-state">
+
+                <h3>
+                    No study rooms found
+                </h3>
+
+                <p>
+                    Create the first room and start learning together.
+                </p>
+
+                <a href="{% url 'create_room' %}">
+                    Create a Room
+                </a>
+
+            </div>
+
+        {% endfor %}

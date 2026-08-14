@@ -1,0 +1,103 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="studybud-container">
+
+    {% include 'base/topics_component.html' %}
+
+    <main class="content-area">
+
+        <!-- Hero Section -->
+        <div class="hero">
+
+            <div class="hero-text">
+
+                <h1>
+                    Study together.
+                </h1>
+
+                <p>
+                    Find a study room and learn with the community.
+                </p>
+
+            </div>
+
+            <a href="{% url 'create_room' %}" class="create-room-btn">
+                + Create Room
+            </a>
+
+        </div>
+
+
+        <!-- Statistics -->
+        <div class="stats-grid">
+
+            <div class="stat">
+
+                <div class="stat-icon">
+                    ROOM
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        Rooms Found
+                    </div>
+
+                    <div class="stat-value">
+                        {{ rooms.count }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-icon">
+                    TOPIC
+                </div>
+
+                <div>
+
+                    <div class="stat-label">
+                        Topics
+                    </div>
+
+                    <div class="stat-value">
+                        {{ topics.count }}
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Room Section -->
+        <div class="section-heading">
+
+            <h2>
+                Study Rooms
+            </h2>
+
+            <span class="room-count">
+                {{ rooms.count }} rooms
+            </span>
+
+        </div>
+
+
+        {% include 'base/feed_component.html' %}
+
+    </main>
+
+
+    {% include 'base/activity_component.html' %}
+
+</div>
+
+{% endblock content %}

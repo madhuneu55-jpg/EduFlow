@@ -1,0 +1,40 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div class="profile-page">
+
+    <!-- Profile Header -->
+    <div class="profile-header">
+
+        <div class="profile-avatar">
+            {{ user.username|first|upper }}
+        </div>
+
+        <div class="profile-info">
+            <h1>@{{ user.username }}</h1>
+            <p>Study rooms created by {{ user.username }}</p>
+        </div>
+
+    </div>
+
+
+    <!-- User Rooms -->
+    <section class="profile-rooms">
+
+        <div class="section-header">
+            <h2>Study Rooms</h2>
+            <p>{{ rooms|length }} room{{ rooms|length|pluralize }} created</p>
+        </div>
+
+        <div class="room-feed">
+
+            {% include 'base/feed_component.html' %}
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock content %}

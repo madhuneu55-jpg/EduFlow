@@ -1,0 +1,444 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    .room-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 25px 60px;
+    }
+
+    /* Room Header */
+    .room-header {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .room-header h1 {
+        margin: 0 0 10px;
+        color: #111827;
+        font-size: 34px;
+    }
+
+    .room-header p {
+        margin: 0;
+        color: #64748b;
+        line-height: 1.6;
+    }
+
+    /* Room Layout */
+    .room-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 300px;
+        gap: 25px;
+    }
+
+    /* Conversation */
+    .comment-wrapper,
+    .participants-wrapper {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .comment-wrapper h3,
+    .participants-wrapper h3 {
+        margin: 0;
+        color: #111827;
+        font-size: 22px;
+    }
+
+    .comment-wrapper hr,
+    .participants-wrapper hr {
+        border: none;
+        border-top: 1px solid #e5e7eb;
+        margin: 25px 0 15px;
+    }
+
+    /* Individual Message */
+    .message {
+        padding: 14px 0;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .message:last-of-type {
+        border-bottom: none;
+    }
+
+    .message-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .message small {
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    .message p {
+        margin: 7px 0 0;
+        color: #334155;
+        line-height: 1.5;
+        word-break: break-word;
+    }
+
+    /* Delete Message */
+    .delete-message {
+        color: #dc2626;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .delete-message:hover {
+        text-decoration: underline;
+    }
+
+    /* Message Form */
+    .message-form {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .message-form input {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        outline: none;
+        font-size: 14px;
+    }
+
+    .message-form input:focus {
+        border-color: #4f46e5;
+    }
+
+    .message-form button {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        background: #4f46e5;
+        color: white;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    .message-form button:hover {
+        background: #4338ca;
+    }
+
+    /* Login Message */
+    .login-message {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8fafc;
+        border-radius: 8px;
+        color: #64748b;
+        text-align: center;
+        font-size: 14px;
+    }
+
+    .login-message a {
+        color: #4f46e5;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .login-message a:hover {
+        text-decoration: underline;
+    }
+
+    /* Participants */
+    .participant {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 0;
+        border-bottom: 1px solid #edf0f5;
+    }
+
+    .participant:last-child {
+        border-bottom: none;
+    }
+
+    .participant-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #eef2ff;
+        color: #4f46e5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .participant-name {
+        color: #334155;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .participant-role {
+        color: #94a3b8;
+        font-size: 12px;
+        margin-top: 2px;
+    }
+
+    .no-participants {
+        color: #94a3b8;
+        font-size: 14px;
+    }
+
+    .no-messages {
+        color: #94a3b8;
+        font-size: 14px;
+        margin: 15px 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 850px) {
+        .room-layout {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 550px) {
+        .room-container {
+            padding: 0 15px 40px;
+            margin-top: 25px;
+        }
+
+        .room-header {
+            padding: 22px;
+        }
+
+        .room-header h1 {
+            font-size: 27px;
+        }
+
+        .comment-wrapper,
+        .participants-wrapper {
+            padding: 20px;
+        }
+
+        .message-form {
+            flex-direction: column;
+        }
+
+        .message-form button {
+            width: 100%;
+        }
+
+        .message-header {
+            align-items: flex-start;
+        }
+    }
+</style>
+
+
+<div class="room-container">
+
+    <!-- Room Header -->
+
+    <div class="room-header">
+
+        <h1>
+            {{ room.name }}
+        </h1>
+
+        {% if room.description %}
+
+            <p>
+                {{ room.description }}
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- Room Content -->
+
+    <div class="room-layout">
+
+
+        <!-- Conversation -->
+
+        <div class="comment-wrapper">
+
+            <h3>
+                Conversation
+            </h3>
+
+            <hr>
+
+
+            <!-- Messages -->
+
+            {% for message in room_messages %}
+
+                <div class="message">
+
+                    <div class="message-header">
+
+                        <small>
+                            @{{ message.user.username }}
+                            · {{ message.created|timesince }} ago
+                        </small>
+
+
+                        {% if request.user == message.user %}
+
+                            <a
+                                href="{% url 'delete_message' message.id %}"
+                                class="delete-message"
+                            >
+                                Delete
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <p>
+                        {{ message.body }}
+                    </p>
+
+                </div>
+
+
+            {% empty %}
+
+                <p class="no-messages">
+                    No messages yet.
+                </p>
+
+            {% endfor %}
+
+
+            <!-- Message Form -->
+
+            {% if request.user.is_authenticated %}
+
+                <form
+                    method="POST"
+                    class="message-form"
+                >
+
+                    {% csrf_token %}
+
+                    <input
+                        type="text"
+                        name="body"
+                        placeholder="Write your message here..."
+                        required
+                    >
+
+                    <button type="submit">
+                        Send
+                    </button>
+
+                </form>
+
+
+            {% else %}
+
+                <div class="login-message">
+
+                    You must
+
+                    <a href="{% url 'login' %}">
+                        login
+                    </a>
+
+                    to send a message.
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Participants -->
+
+        <div class="participants-wrapper">
+
+            <h3>
+                Participants
+            </h3>
+
+            <hr>
+
+
+            {% for participant in participants %}
+
+                <div class="participant">
+
+                    <div class="participant-avatar">
+
+                        {{ participant.username|first|upper }}
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="participant-name">
+
+                            @{{ participant.username }}
+
+                        </div>
+
+
+                        {% if participant == room.host %}
+
+                            <div class="participant-role">
+                                Host
+                            </div>
+
+                        {% else %}
+
+                            <div class="participant-role">
+                                Participant
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+
+            {% empty %}
+
+                <p class="no-participants">
+                    No participants yet.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+{% endblock content %}

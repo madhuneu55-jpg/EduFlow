@@ -1,0 +1,39 @@
+<aside class="sidebar">
+
+        <div class="sidebar-heading">
+
+            <div class="sidebar-icon">
+                E
+            </div>
+
+            <div>
+                <h3>Explore</h3>
+                <p>Browse study topics</p>
+            </div>
+
+        </div>
+
+        <hr class="sidebar-divider">
+
+        <a href="{% url 'home' %}" class="topic-link active">
+            All Topics
+        </a>
+
+        {% for topic in topics %}
+
+            <a
+                href="{% url 'home' %}?q={{ topic.name }}"
+                class="topic-link"
+            >
+                {{ topic.name }}
+            </a>
+
+        {% empty %}
+
+            <p style="color:#94a3b8;font-size:13px;">
+                No topics available.
+            </p>
+
+        {% endfor %}
+
+    </aside>

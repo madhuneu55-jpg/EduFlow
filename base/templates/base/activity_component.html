@@ -1,0 +1,65 @@
+<aside class="activity-sidebar">
+
+        <div class="activity-heading">
+
+            <h3>
+                Recent Activity
+            </h3>
+
+            <p>
+                Latest community activity
+            </p>
+
+        </div>
+
+
+        {% for message in recent_messages %}
+            <div class="activity-item">
+
+                <div class="activity-avatar">
+                    {{ message.user.username|first|upper }}
+                </div>
+
+
+                <div class="activity-content">
+
+                    <div class="activity-text">
+
+                        <strong>
+                            <a href="{% url 'user_profile' message.user.id %}">
+        @{{ message.user.username }}
+    </a>
+                        </strong>
+
+                        posted in
+
+                        <a href="{% url 'room' message.room.id %}">
+                            {{ message.room.name }}
+                        </a>
+
+                    </div>
+
+
+                    <p class="activity-message">
+                        {{ message.body }}
+                    </p>
+
+
+                    <span class="activity-time">
+                        {{ message.created|timesince }} ago
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        {% empty %}
+
+            <p class="no-activity">
+                No recent activity.
+            </p>
+
+        {% endfor %}
+
+    </aside>

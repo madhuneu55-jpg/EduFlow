@@ -1,0 +1,422 @@
+<nav class="navbar">
+
+    <div class="nav-container">
+
+        <!-- LOGO -->
+        <a href="{% url 'home' %}" class="logo">
+            <span class="logo-icon">E</span>
+            <span>EduFlow</span>
+        </a>
+
+
+        <!-- SEARCH -->
+        <form method="GET" action="{% url 'home' %}" class="nav-search">
+
+            <span class="search-icon">⌕</span>
+
+            <input
+                type="text"
+                name="q"
+                value="{{ request.GET.q }}"
+                placeholder="Search study rooms..."
+            >
+
+            {% if request.GET.q %}
+                <a href="{% url 'home' %}" class="clear-search">×</a>
+            {% endif %}
+
+        </form>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="nav-right">
+
+            <!-- CREATE ROOM -->
+            <a href="{% url 'create_room' %}" class="nav-create">
+                + Create Room
+            </a>
+
+
+            {% if request.user.is_authenticated %}
+
+                <!-- USER PROFILE -->
+                <div class="profile">
+
+                    <div class="profile-avatar">
+                        {{ request.user.username|first|upper }}
+                    </div>
+
+                    <span class="username">
+                        {{ request.user.username }}
+                    </span>
+
+                </div>
+
+
+                <!-- LOGOUT -->
+                <a href="{% url 'logout' %}" class="logout-btn">
+                    Logout
+                </a>
+
+
+            {% else %}
+
+                <!-- LOGIN -->
+                <a href="{% url 'login' %}" class="login-btn">
+                    Login
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+
+    /* =========================
+       NAVBAR
+    ========================= */
+
+    .navbar {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.96);
+        border-bottom: 1px solid #e5e7eb;
+
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+
+        backdrop-filter: blur(10px);
+    }
+
+
+    .nav-container {
+        max-width: 1250px;
+        margin: auto;
+
+        min-height: 70px;
+
+        padding: 0 20px;
+
+        display: flex;
+        align-items: center;
+        gap: 30px;
+    }
+
+
+    /* =========================
+       LOGO
+    ========================= */
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+
+        color: #111827;
+        text-decoration: none;
+
+        font-size: 21px;
+        font-weight: 800;
+
+        white-space: nowrap;
+    }
+
+
+    .logo-icon {
+        width: 34px;
+        height: 34px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: linear-gradient(
+            135deg,
+            #6366f1,
+            #4f46e5
+        );
+
+        color: white;
+
+        border-radius: 9px;
+
+        font-size: 17px;
+        font-weight: 800;
+
+        box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
+    }
+
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    .nav-search {
+        flex: 1;
+
+        max-width: 520px;
+
+        height: 42px;
+
+        display: flex;
+        align-items: center;
+
+        background: #f8fafc;
+
+        border: 1px solid #e2e8f0;
+
+        border-radius: 10px;
+
+        padding: 0 12px;
+
+        transition: 0.2s;
+    }
+
+
+    .nav-search:focus-within {
+        background: white;
+
+        border-color: #818cf8;
+
+        box-shadow:
+            0 0 0 3px rgba(99, 102, 241, 0.10);
+    }
+
+
+    .search-icon {
+        color: #94a3b8;
+
+        font-size: 21px;
+
+        margin-right: 8px;
+    }
+
+
+    .nav-search input {
+        width: 100%;
+
+        border: none;
+        outline: none;
+
+        background: transparent;
+
+        font-size: 14px;
+
+        color: #111827;
+    }
+
+
+    .nav-search input::placeholder {
+        color: #94a3b8;
+    }
+
+
+    .clear-search {
+        color: #94a3b8;
+
+        text-decoration: none;
+
+        font-size: 20px;
+
+        padding-left: 8px;
+    }
+
+
+    .clear-search:hover {
+        color: #111827;
+    }
+
+
+    /* =========================
+       RIGHT SIDE
+    ========================= */
+
+    .nav-right {
+        margin-left: auto;
+
+        display: flex;
+        align-items: center;
+
+        gap: 12px;
+    }
+
+
+    /* =========================
+       CREATE ROOM
+    ========================= */
+
+    .nav-create {
+        color: #4f46e5;
+
+        text-decoration: none;
+
+        font-size: 14px;
+        font-weight: 600;
+
+        padding: 9px 13px;
+
+        border-radius: 8px;
+
+        transition: 0.2s;
+    }
+
+
+    .nav-create:hover {
+        background: #eef2ff;
+    }
+
+
+    /* =========================
+       PROFILE
+    ========================= */
+
+    .profile {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        color: #374151;
+
+        font-size: 14px;
+
+        font-weight: 600;
+    }
+
+
+    .profile-avatar {
+        width: 34px;
+        height: 34px;
+
+        border-radius: 50%;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: #eef2ff;
+
+        color: #4f46e5;
+
+        font-size: 14px;
+
+        font-weight: 700;
+    }
+
+
+    /* =========================
+       LOGOUT
+    ========================= */
+
+    .logout-btn {
+        text-decoration: none;
+
+        color: #dc2626;
+
+        background: #fef2f2;
+
+        border: 1px solid #fecaca;
+
+        padding: 8px 13px;
+
+        border-radius: 8px;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        transition: 0.2s;
+    }
+
+
+    .logout-btn:hover {
+        background: #fee2e2;
+
+        color: #b91c1c;
+    }
+
+
+    /* =========================
+       LOGIN
+    ========================= */
+
+    .login-btn {
+        text-decoration: none;
+
+        background: #4f46e5;
+
+        color: white;
+
+        padding: 9px 16px;
+
+        border-radius: 8px;
+
+        font-size: 14px;
+
+        font-weight: 600;
+
+        transition: 0.2s;
+    }
+
+
+    .login-btn:hover {
+        background: #4338ca;
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 800px) {
+
+        .nav-container {
+            gap: 15px;
+        }
+
+        .nav-create {
+            display: none;
+        }
+
+        .profile .username {
+            display: none;
+        }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+        .nav-container {
+            flex-wrap: wrap;
+
+            padding-top: 12px;
+
+            padding-bottom: 12px;
+        }
+
+
+        .nav-search {
+            order: 3;
+
+            flex-basis: 100%;
+
+            max-width: none;
+        }
+
+    }
+
+</style>
