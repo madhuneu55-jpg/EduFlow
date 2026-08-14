@@ -29,21 +29,36 @@ EduFlow is a Django-based educational discussion platform where users can create
 - SQLite
 - Git & GitHub
 
+
 ## Project Structure
 
-
+```text
 EduFlow/
-├── Studybud/
-├── base/
-│   ├── api/
-│   ├── migrations/
-│   ├── templates/
-│   ├── models.py
-│   ├── views.py
-│   ├── forms.py
-│   └── urls.py
-├── static/
-├── templates/
-├── manage.py
-├── requirements.txt
-└── README.md
+│
+├── Studybud/                    # Django project configuration
+│   ├── settings.py              # Project settings
+│   ├── urls.py                  # Main URL configuration
+│   ├── asgi.py
+│   └── wsgi.py
+│
+├── base/                        # Main EduFlow application
+│   ├── api/                     # REST API
+│   │   ├── serializers.py       # API serializers
+│   │   ├── urls.py              # API URLs
+│   │   └── views.py             # API views
+│   │
+│   ├── migrations/              # Database migrations
+│   ├── templates/base/          # App templates
+│   ├── models.py                # Database models
+│   ├── views.py                 # Web views
+│   ├── forms.py                 # Django forms
+│   └── urls.py                  # App URLs
+│
+├── static/                      # CSS and static files
+│
+├── templates/                   # Shared templates
+│
+├── manage.py                    # Django management utility
+├── requirements.txt             # Python dependencies
+├── .gitignore                   # Files ignored by Git
+└── README.md                    # Project documentation
